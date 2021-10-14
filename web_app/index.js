@@ -4,6 +4,26 @@ document.onkeyup = resetKey;
 var server_port = 65432;
 var server_addr = "192.168.3.49";   // the IP address of your Raspberry PI
 
+function sendMoveForwardCommand() {
+    // alert("moving forward");
+    // console.log("we are moving forward");
+}
+
+function sendMoveBackwardCommand() {
+    // alert("moving forward");
+    // console.log("we are moving forward");
+}
+
+function sendMoveLeftCommand() {
+    // alert("moving forward");
+    // console.log("we are moving forward");
+}
+
+function sendMoveRightCommand() {
+    // alert("moving forward");
+    // console.log("we are moving forward");
+}
+
 function client(){
     
     const net = require('net');
