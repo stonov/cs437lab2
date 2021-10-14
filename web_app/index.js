@@ -7,33 +7,39 @@ var server_addr = "192.168.1.128";   // the IP address of your Raspberry PI
 function sendMoveForwardCommand() {
     // alert("moving forward");
     // console.log("we are moving forward");
+    client("moving forward");
 }
 
 function sendMoveBackwardCommand() {
     // alert("moving forward");
     // console.log("we are moving forward");
+    client("moving backward");
 }
 
 function sendMoveLeftCommand() {
     // alert("moving forward");
     // console.log("we are moving forward");
+    client("moving left");
 }
 
 function sendMoveRightCommand() {
     // alert("moving forward");
     // console.log("we are moving forward");
+    client("moving right");
 }
 
 function client(data=""){
     // alert("sending data....");
     const net = require('net');
-    var input = document.getElementById("message").value;
+    if (data == "") {
+        data = document.getElementById("message").value;
+    }
 
     const client = net.createConnection({ port: server_port, host: server_addr }, () => {
         // 'connect' listener.
         console.log('connected to server!');
         // send the message
-        client.write(`${input}\r\n`);
+        client.write(`${data}\r\n`);
     });
     
     // get the data from the server
@@ -59,22 +65,22 @@ function updateKey(e) {
     if (e.keyCode == '87') {
         // up (w)
         document.getElementById("upArrow").style.color = "green";
-        send_data("87");
+        sendMoveForwardCommand();
     }
     else if (e.keyCode == '83') {
         // down (s)
         document.getElementById("downArrow").style.color = "green";
-        send_data("83");
+        sendMoveBackwardCommand();
     }
     else if (e.keyCode == '65') {
         // left (a)
         document.getElementById("leftArrow").style.color = "green";
-        send_data("65");
+        sendMoveLeftCommand();
     }
     else if (e.keyCode == '68') {
         // right (d)
         document.getElementById("rightArrow").style.color = "green";
-        send_data("68");
+        sendMoveRightCommand();
     }
 }
 
@@ -88,7 +94,6 @@ function resetKey(e) {
     document.getElementById("leftArrow").style.color = "grey";
     document.getElementById("rightArrow").style.color = "grey";
 }
-
 
 // update data for every 50ms
 function update_data(){
