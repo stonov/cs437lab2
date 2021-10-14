@@ -5,27 +5,19 @@ var server_port = 65432;
 var server_addr = "192.168.1.128";   // the IP address of your Raspberry PI
 
 function sendMoveForwardCommand() {
-    // alert("moving forward");
-    // console.log("we are moving forward");
-    client("moving forward");
+    client("forward");
 }
 
 function sendMoveBackwardCommand() {
-    // alert("moving forward");
-    // console.log("we are moving forward");
-    client("moving backward");
+    client("backward");
 }
 
 function sendMoveLeftCommand() {
-    // alert("moving forward");
-    // console.log("we are moving forward");
-    client("moving left");
+    client("left");
 }
 
 function sendMoveRightCommand() {
-    // alert("moving forward");
-    // console.log("we are moving forward");
-    client("moving right");
+    client("right");
 }
 
 function client(data=""){

@@ -8,12 +8,16 @@ def process_data(data=""):
     if data != "":
         if data == "forward":
             print("moving forward")
+            fc.forward(power=50)
         elif data == "backward":
             print("moving backward")
+            fc.backward(power=50)
         elif data == "right":
             print("moving right")
+            fc.turn_right(power=50)
         elif data == "left":
             print("moving left")
+            fc.turn_left(power=50)
         else:
             print(data)
 
