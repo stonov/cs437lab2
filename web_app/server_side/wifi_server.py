@@ -1,5 +1,6 @@
 import socket
 import picar_4wd as fc
+from time import sleep
 
 HOST = "192.168.1.128" # IP address of your Raspberry PI
 PORT = 65432          # Port to listen on (non-privileged ports are > 1023)
@@ -23,6 +24,9 @@ def process_data(data=""):
             fc.stop()
         else:
             print(data)
+
+        sleep(0.1)
+        fc.stop()
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
