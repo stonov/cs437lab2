@@ -21,12 +21,12 @@ def process_data(data=""):
             fc.turn_left(power=50)
         elif data == "stop":
             print("stopping")
-            fc.stop()
+            fc.forward(0)
         else:
             print(data)
 
         sleep(0.1)
-        fc.stop()
+        fc.forward(0)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))

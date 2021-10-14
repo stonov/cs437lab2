@@ -4,6 +4,8 @@ document.onkeyup = resetKey;
 var server_port = 65432;
 var server_addr = "192.168.1.128";   // the IP address of your Raspberry PI
 
+data_tobe_sent = ""
+
 function sendMoveForwardCommand() {
     client("forward");
 }
@@ -25,12 +27,10 @@ function sendStopCommand() {
 }
 
 function client(data=""){
-    // alert("sending data....");
-    const net = require('net');
     if (data == "") {
-        data = document.getElementById("message").value;
+        return;
     }
-
+    const net = require('net');
     const client = net.createConnection({ port: server_port, host: server_addr }, () => {
         // 'connect' listener.
         console.log('connected to server!');
@@ -61,26 +61,31 @@ function updateKey(e) {
     if (e.keyCode == '87') {
         // up (w)
         document.getElementById("upArrow").style.color = "green";
-        sendMoveForwardCommand();
+        // sendMoveForwardCommand();
+        data_tobe_sent = "forward"
     }
     else if (e.keyCode == '83') {
         // down (s)
         document.getElementById("downArrow").style.color = "green";
-        sendMoveBackwardCommand();
+        // sendMoveBackwardCommand();
+        data_tobe_sent = "backward"
     }
     else if (e.keyCode == '65') {
         // left (a)
         document.getElementById("leftArrow").style.color = "green";
-        sendMoveLeftCommand();
+        // sendMoveLeftCommand();
+        data_tobe_sent = "left"
     }
     else if (e.keyCode == '68') {
         // right (d)
         document.getElementById("rightArrow").style.color = "green";
-        sendMoveRightCommand();
+        // sendMoveRightCommand();
+        data_tobe_sent = "right"
     }
     else if (e.keyCode == '81') {
         // stop (e)
-        sendStopCommand();
+        // sendStopCommand();
+        data_tobe_sent = "stop"
     }
 }
 
@@ -102,3 +107,12 @@ function update_data(){
         client();
     }, 50);
 }
+
+function run_client() {
+    setInterval(function(){
+        // get image from python server
+        client(data_tobe_sent);
+        data_tobe_sent = ""
+    }, 100);
+}
+
