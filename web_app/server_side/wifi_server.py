@@ -6,7 +6,6 @@ PORT = 65432          # Port to listen on (non-privileged ports are > 1023)
 
 def process_data(data=""):
     if data != "":
-        data = str(data)
         if data == "forward":
             print("moving forward")
             fc.forward(power=50)
