@@ -42,9 +42,9 @@ function sendSpeedDown() {
 }
 
 function client(data=""){
-    // if (data == "") {
-    //     return;
-    // }
+    if (data == "") {
+        return;
+    }
     const net = require('net');
     const client = net.createConnection({ port: server_port, host: server_addr }, () => {
         // 'connect' listener.
@@ -70,9 +70,7 @@ function client(data=""){
 
 // for detecting which key is been pressed w,a,s,d
 function updateKey(e) {
-
     e = e || window.event;
-    console.log(e.keyCode);
     if (e.keyCode == '87') {
         // up (w)
         document.getElementById("upArrow").style.color = "green";
@@ -99,12 +97,10 @@ function updateKey(e) {
     }
     else if (e.keyCode == '187') {
         // increase speed (e)
-        console.log("speed up");
         sendSpeedUp();
     }
     else if (e.keyCode == '189') {
         // decrease speed (e)
-        console.log("speed down");
         sendSpeedDown();
     }
 }
