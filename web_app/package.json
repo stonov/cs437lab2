@@ -1,16 +1,22 @@
 {
-  "name": "web_app",
+  "name": "electron-quick-start",
   "version": "1.0.0",
-  "description": "",
+  "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron ."
   },
-  "keywords": [],
+  "repository": "https://github.com/electron/electron-quick-start",
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "tutorial",
+    "demo"
+  ],
   "author": "ICE/BREAKers",
-  "license": "ISC and SAM",
-  "dependencies": {
-    "electron": "^15.1.2"
+  "license": "ISC And SAM",
+  "devDependencies": {
+    "electron": "^9.1.2"
   }
 }
