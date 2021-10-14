@@ -31,7 +31,7 @@ function client(data=""){
         // 'connect' listener.
         console.log('connected to server!');
         // send the message
-        client.write(`${data}\r\n`);
+        client.write(`${data}`);
     });
     
     // get the data from the server
