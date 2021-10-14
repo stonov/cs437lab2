@@ -18,6 +18,9 @@ def process_data(data=""):
         elif data == "left":
             print("moving left")
             fc.turn_left(power=50)
+        elif data == "stop":
+            print("stopping")
+            fc.stop()
         else:
             print(data)
 

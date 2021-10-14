@@ -20,6 +20,10 @@ function sendMoveRightCommand() {
     client("right");
 }
 
+function sendStopCommand() {
+    client("stop");
+}
+
 function client(data=""){
     // alert("sending data....");
     const net = require('net');
@@ -73,6 +77,10 @@ function updateKey(e) {
         // right (d)
         document.getElementById("rightArrow").style.color = "green";
         sendMoveRightCommand();
+    }
+    else if (e.keyCode == '81') {
+        // stop (e)
+        sendStopCommand();
     }
 }
 
