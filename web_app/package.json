@@ -1,12 +1,11 @@
 {
-  "name": "electron-quick-start",
+  "name": "tesla-controller",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
     "Electron",
     "quick",
@@ -17,6 +16,9 @@
   "author": "ICE/BREAKers",
   "license": "ISC And SAM",
   "devDependencies": {
-    "electron": "^9.1.2"
+    "electron": "^10.4.7"
+  },
+  "dependencies": {
+    "require": "^2.4.20"
   }
 }
