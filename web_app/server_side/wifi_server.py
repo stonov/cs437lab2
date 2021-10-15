@@ -39,7 +39,7 @@ def speedometer_handler():
 
 def fire_up_thread():
     global speedometer
-    
+
     speedometer = Thread(target=speedometer_handler)
     speedometer.start()
 
@@ -84,21 +84,20 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             data = client.recv(1024)      # receive 1024 Bytes of message in binary format
             data = data.decode("utf-8")
             process_data(data)
-            ret_data = {
-                'direction': data.lower(),
-                'power': str(round(fc.power_read(), 2) + "V"),
-                'speed': str(round(fc.speed_val(), 2) + "cm/s"),
-                'distance': str(round(distance_covered, 2) + "cm"),
-                'temp': str(round(fc.cpu_temperature(), 2) + "C")
-            }
-            # print("data to send: {}".format(ret_data))
             try:
+                ret_data = {
+                    'direction': data.lower(),
+                    'power': str(round(fc.power_read(), 2) + "V"),
+                    'speed': str(round(fc.speed_val(), 2) + "cm/s"),
+                    'distance': str(round(distance_covered, 2) + "cm"),
+                    'temp': str(round(fc.cpu_temperature(), 2) + "C")
+                }
                 client.sendall(\
                     bytes(json.dumps(ret_data)\
                         , "utf-8"))
             except Exception as e:
                 print(e)
-    except: 
+    except:
         print("Closing socket")
         fc.left_rear_speed.deinit()
         fc.right_rear_speed.deinit()
