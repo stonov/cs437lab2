@@ -9,6 +9,8 @@ const STOP = "STOP"
 const SPEEDUP = "SPEEDUP"
 const SPEEDDOWN = "SPEEDDOWN"
 const UPDATE = "UPDATE"
+const SERVO_RIGHT = "SERVO_RIGHT"
+const SERVO_LEFT = "SERVO_LEFT"
 
 var server_port = 65432;
 var server_addr = "192.168.1.128";   // the IP address of your Raspberry PI
@@ -41,6 +43,14 @@ function sendSpeedDown() {
     client(SPEEDDOWN);
 }
 
+function sendServoLeftCommand() {
+    client(SERVO_LEFT)
+}
+
+function sendServoRightCommand() {
+    client(SERVO_RIGHT)
+}
+
 function client(data="") {
     if (data == "") {
         return;
@@ -71,6 +81,12 @@ function client(data="") {
         if (data_json['speed'] != "") {
             document.getElementById("temperature").innerHTML = data_json['temp'];
         }
+        if (data_json['ultra'] != "") {
+            document.getElementById("ultra").innerHTML = data_json['ultra'];
+        }
+        if (data_json['servo'] != "") {
+            document.getElementById("servo").innerHTML = data_json['servo'];
+        }
         console.log(data_json);
         client.end();
         client.destroy();
@@ -86,6 +102,7 @@ function client(data="") {
 // for detecting which key is been pressed w,a,s,d
 function updateKey(e) {
     e = e || window.event;
+    console.log(e.keyCode);
     if (e.keyCode == '87') {
         // up (w)
         document.getElementById("upArrow").style.color = "green";
@@ -117,6 +134,14 @@ function updateKey(e) {
     else if (e.keyCode == '189') {
         // decrease speed (e)
         sendSpeedDown();
+    }
+    else if (e.keyCode == '77') {
+        // turn servo right (e)
+        sendServoRightCommand();
+    }
+    else if (e.keyCode == '78') {
+        // turn servo left (e)
+        sendServoLeftCommand();
     }
 }
 

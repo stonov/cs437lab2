@@ -12,6 +12,8 @@ RIGHT = "RIGHT"
 STOP = "STOP"
 SPEEDUP = "SPEEDUP"
 SPEEDDOWN = "SPEEDDOWN"
+SERVO_RIGHT = "SERVO_RIGHT"
+SERVO_LEFT = "SERVO_LEFT"
 UPDATE = "UPDATE"
 IDLE = 0
 STOP_INTERVAL = 0.1
@@ -24,6 +26,13 @@ speed_num = 0
 avg_speed = 0.0
 running = 1
 speedometer: Thread = None
+
+def turn_servo(dir: int, at=18):
+    if dir == 0:
+        fc.angle_distance = min(fc.max_angle, fc.current_angle + at)
+    else:
+        fc.angle_distance = max(fc.min_angle, fc.current_angle - at)
+    fc.servo.set_angle(fc.current_angle)
 
 def speedometer_handler():
     global speed_num
@@ -49,29 +58,23 @@ def process_data(data=""):
 
     if data != "":
         if data == FROWARD:
-            print("moving forward")
             fc.forward(power=power_val)
         elif data == BACKWARD:
-            print("moving backward")
             fc.backward(power=power_val)
         elif data == RIGHT:
-            print("moving right")
             fc.turn_right(power=power_val)
         elif data == LEFT:
-            print("moving left")
             fc.turn_left(power=power_val)
-        elif data == STOP:
-            print("stopping")
-            fc.forward(IDLE)
         elif data == SPEEDUP:
-            print("speeding up")
             power_val = min(100, power_val+10)
         elif data == SPEEDDOWN:
-            print("slowing down")
             power_val = max(10, power_val-10)
+        elif data == SERVO_RIGHT:
+            turn_servo(1)
+        elif data == SERVO_LEFT:
+            turn_servo(0)
         else:
-            print(data)
-        print("after")
+            fc.stop()
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
@@ -82,10 +85,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     try:
         while 1:
             try:
+                print("----------------")
                 client, clientInfo = s.accept()
-                print("server recv from: ", clientInfo)
                 data = client.recv(1024)      # receive 1024 Bytes of message in binary format
                 data = data.decode("utf-8")
+                print("From {}: {}".format(client, data))
                 process_data(data)
                 direction = ""
                 if data not in [STOP, SPEEDUP, SPEEDDOWN, UPDATE]:
@@ -94,12 +98,15 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 speed_val = str(round(fc.speed_val(), 2)) + "cm/s"
                 distance = str(round(distance_covered, 2)) + "cm"
                 temp = str(round(fc.cpu_temperature(), 2)) + "C"
+                ultra_val = str(round(fc.get_distance_at(0))) + "cm"
+                servo_angle = str(fc.current_angle)
                 ret_data = {
                     'direction': direction,
                     'power': power,
                     'speed': speed_val,
                     'distance': distance,
-                    'temp': temp
+                    'temp': temp,
+                    'ultra': ultra_val
                 }
                 client.sendall(bytes(json.dumps(ret_data), "utf-8"))
             except Exception as e:
