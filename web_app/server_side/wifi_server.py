@@ -5,8 +5,6 @@ import json
 from time import *
 from threading import *
 
-from web_app.server_side.picar_4wd import servo
-
 FROWARD = "FORWARD"
 BACKWARD = "BACKWARD"
 LEFT = "LEFT"
@@ -105,14 +103,15 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 distance = str(round(distance_covered, 2)) + "cm"
                 temp = str(round(fc.cpu_temperature(), 2)) + "C"
                 ultra_val = str(round(fc.get_distance_at(0))) + "cm"
-                servo_angle = str(fc.current_angle)
+                servo_angle_val = str(servo_angle)
                 ret_data = {
                     'direction': direction,
                     'power': power,
                     'speed': speed_val,
                     'distance': distance,
                     'temp': temp,
-                    'ultra': ultra_val
+                    'ultra': ultra_val,
+                    'servo': servo_angle_val
                 }
                 client.sendall(bytes(json.dumps(ret_data), "utf-8"))
             except Exception as e:
