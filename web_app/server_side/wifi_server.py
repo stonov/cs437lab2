@@ -41,7 +41,7 @@ def process_data(data=""):
             speed = min(100, speed+10)
         elif data == SPEEDDOWN:
             print("slowing down")
-            speed = max(0, speed-10)
+            speed = max(10, speed-10)
         else:
             print(data)
         sleep(STOP_INTERVAL)
