@@ -1,47 +1,67 @@
 document.onkeydown = updateKey;
 document.onkeyup = resetKey;
 
+FORWARD = "FORWARD"
+BACKWARD = "BACKWARD"
+LEFT = "LEFT"
+RIGHT = "RIGHT"
+STOP = "STOP"
+SPEEDUP = "SPEEDUP"
+SPEEDDOWN = "SPEEDDOWN"
+
 var server_port = 65432;
 var server_addr = "192.168.1.128";   // the IP address of your Raspberry PI
+var data_tobe_sent = ""
 
 function sendMoveForwardCommand() {
-    // alert("moving forward");
-    // console.log("we are moving forward");
+    data_tobe_sent = FORWARD
 }
 
 function sendMoveBackwardCommand() {
-    // alert("moving forward");
-    // console.log("we are moving forward");
+    data_tobe_sent = BACKWARD
 }
 
 function sendMoveLeftCommand() {
-    // alert("moving forward");
-    // console.log("we are moving forward");
+    data_tobe_sent = LEFT
 }
 
 function sendMoveRightCommand() {
-    // alert("moving forward");
-    // console.log("we are moving forward");
+    data_tobe_sent = RIGHT
 }
 
-function client(){
-    // alert("sending data....");
-    const net = require('net');
-    alert("allahu");
-    var input = document.getElementById("message").value;
-    alert("akbar");
+function sendStopCommand() {
+    data_tobe_sent = STOP
+}
 
+function sendSpeedUp() {
+    data_tobe_sent = SPEEDUP
+}
+
+function sendSpeedDown() {
+    data_tobe_sent = SPEEDDOWN
+}
+
+function client(data="") {
+    if (data == "") {
+        return;
+    }
+    const net = require('net');
     const client = net.createConnection({ port: server_port, host: server_addr }, () => {
         // 'connect' listener.
         console.log('connected to server!');
         // send the message
-        client.write(`${input}\r\n`);
+        client.write(`${data}`);
     });
-    
+
     // get the data from the server
     client.on('data', (data) => {
-        document.getElementById("bluetooth").innerHTML = data;
-        console.log(data.toString());
+        data_json = JSON.parse(data.toString())
+        document.getElementById("power").innerHTML = data_json['power'];
+        document.getElementById("direction").innerHTML = data_json['direction'];
+        document.getElementById("speed").innerHTML = data_json['speed'];
+        document.getElementById("distance").innerHTML = data_json['distance'];
+        document.getElementById("temperature").innerHTML = data_json['temp'];
+        console.log(data_json);
         client.end();
         client.destroy();
     });
@@ -55,28 +75,38 @@ function client(){
 
 // for detecting which key is been pressed w,a,s,d
 function updateKey(e) {
-
     e = e || window.event;
-
     if (e.keyCode == '87') {
         // up (w)
         document.getElementById("upArrow").style.color = "green";
-        send_data("87");
+        sendMoveForwardCommand();
     }
     else if (e.keyCode == '83') {
         // down (s)
         document.getElementById("downArrow").style.color = "green";
-        send_data("83");
+        sendMoveBackwardCommand();
     }
     else if (e.keyCode == '65') {
         // left (a)
         document.getElementById("leftArrow").style.color = "green";
-        send_data("65");
+        sendMoveLeftCommand();
     }
     else if (e.keyCode == '68') {
         // right (d)
         document.getElementById("rightArrow").style.color = "green";
-        send_data("68");
+        sendMoveRightCommand();
+    }
+    else if (e.keyCode == '81') {
+        // stop (e)
+        sendStopCommand();
+    }
+    else if (e.keyCode == '187') {
+        // increase speed (e)
+        sendSpeedUp();
+    }
+    else if (e.keyCode == '189') {
+        // decrease speed (e)
+        sendSpeedDown();
     }
 }
 
@@ -91,11 +121,12 @@ function resetKey(e) {
     document.getElementById("rightArrow").style.color = "grey";
 }
 
-
-// update data for every 50ms
-function update_data(){
+function run_client() {
     setInterval(function(){
         // get image from python server
-        client();
-    }, 50);
+        client(data_tobe_sent);
+        data_tobe_sent = ""
+        // console.log("client sending data");
+    }, 100);
 }
+
