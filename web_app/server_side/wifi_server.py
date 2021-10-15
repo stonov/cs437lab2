@@ -2,7 +2,8 @@ import socket
 import picar_4wd as fc
 import random
 import json
-from time import sleep
+from time import *
+from threading import *
 
 FROWARD = "FORWARD"
 BACKWARD = "BACKWARD"
@@ -16,6 +17,11 @@ STOP_INTERVAL = 0.1
 HOST = "192.168.1.128" # IP address of your Raspberry PI
 PORT = 65432          # Port to listen on (non-privileged ports are > 1023)
 speed = 50
+distance_covered = 0.0
+speed_cumlative = 0.0
+speed_num = 0
+avg_speed = 0.0
+running = 1
 
 def process_data(data=""):
     global speed
@@ -48,6 +54,7 @@ def process_data(data=""):
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
     s.listen()
+    fc.start_speed_thread()
     print("Listening....")
     try:
         while 1:
@@ -60,7 +67,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 'direction': data,
                 'power': fc.power_read(),
                 'speed': fc.speed_val(),
-                'distance': random.randint(1, 5),
+                'distance': distance_covered,
                 'temp': fc.cpu_temperature()
             }
             print("data to send: {}".format(ret_data))
@@ -74,3 +81,22 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         print("Closing socket")
         client.close()
         s.close()
+
+def speedometer_handler():
+    global speed_num
+    global speed_cumlative
+    global avg_speed
+    global distance_covered
+    global running
+
+    while running:
+        current_speed = fc.speed_val()
+        distance_covered += current_speed * 0.5
+        speed_num += 1
+        speed_cumlative += current_speed
+        avg_speed = round(speed_cumlative/speed_num, 2)
+        sleep(0.5)
+
+def fire_up_thread():
+    speedometer = Thread(target=speedometer_handler)
+    speedometer.start()
