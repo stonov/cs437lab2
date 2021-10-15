@@ -23,6 +23,25 @@ speed_num = 0
 avg_speed = 0.0
 running = 1
 
+def speedometer_handler():
+    global speed_num
+    global speed_cumlative
+    global avg_speed
+    global distance_covered
+    global running
+
+    while running:
+        current_speed = fc.speed_val()
+        distance_covered += current_speed * 0.5
+        speed_num += 1
+        speed_cumlative += current_speed
+        avg_speed = round(speed_cumlative/speed_num, 2)
+        sleep(0.5)
+
+def fire_up_thread():
+    speedometer = Thread(target=speedometer_handler)
+    speedometer.start()
+
 def process_data(data=""):
     global speed
 
@@ -55,6 +74,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
     s.listen()
     fc.start_speed_thread()
+    fire_up_thread()
     print("Listening....")
     try:
         while 1:
@@ -81,22 +101,3 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         print("Closing socket")
         client.close()
         s.close()
-
-def speedometer_handler():
-    global speed_num
-    global speed_cumlative
-    global avg_speed
-    global distance_covered
-    global running
-
-    while running:
-        current_speed = fc.speed_val()
-        distance_covered += current_speed * 0.5
-        speed_num += 1
-        speed_cumlative += current_speed
-        avg_speed = round(speed_cumlative/speed_num, 2)
-        sleep(0.5)
-
-def fire_up_thread():
-    speedometer = Thread(target=speedometer_handler)
-    speedometer.start()
