@@ -1,45 +1,44 @@
 document.onkeydown = updateKey;
 document.onkeyup = resetKey;
 
-FORWARD = "FORWARD"
-BACKWARD = "BACKWARD"
-LEFT = "LEFT"
-RIGHT = "RIGHT"
-STOP = "STOP"
-SPEEDUP = "SPEEDUP"
-SPEEDDOWN = "SPEEDDOWN"
-UPDATE = "UPDATE"
+const FORWARD = "FORWARD"
+const BACKWARD = "BACKWARD"
+const LEFT = "LEFT"
+const RIGHT = "RIGHT"
+const STOP = "STOP"
+const SPEEDUP = "SPEEDUP"
+const SPEEDDOWN = "SPEEDDOWN"
+const UPDATE = "UPDATE"
 
 var server_port = 65432;
 var server_addr = "192.168.1.128";   // the IP address of your Raspberry PI
-var data_tobe_sent = UPDATE
 
 function sendMoveForwardCommand() {
-    data_tobe_sent = FORWARD
+    client(FORWARD);
 }
 
 function sendMoveBackwardCommand() {
-    data_tobe_sent = BACKWARD
+    client(BACKWARD);
 }
 
 function sendMoveLeftCommand() {
-    data_tobe_sent = LEFT
+    client(LEFT);
 }
 
 function sendMoveRightCommand() {
-    data_tobe_sent = RIGHT
+    client(RIGHT);
 }
 
 function sendStopCommand() {
-    data_tobe_sent = STOP
+    client(STOP);
 }
 
 function sendSpeedUp() {
-    data_tobe_sent = SPEEDUP
+    client(SPEEDUP);
 }
 
 function sendSpeedDown() {
-    data_tobe_sent = SPEEDDOWN
+    client(SPEEDDOWN);
 }
 
 function client(data="") {
@@ -57,11 +56,21 @@ function client(data="") {
     // get the data from the server
     client.on('data', (data) => {
         data_json = JSON.parse(data.toString())
-        document.getElementById("power").innerHTML = data_json['power'];
-        document.getElementById("direction").innerHTML = data_json['direction'];
-        document.getElementById("speed").innerHTML = data_json['speed'];
-        document.getElementById("distance").innerHTML = data_json['distance'];
-        document.getElementById("temperature").innerHTML = data_json['temp'];
+        if (data_json['power'] != "") {
+            document.getElementById("power").innerHTML = data_json['power'];
+        }
+        if (data_json['direction'] != "") {
+            document.getElementById("direction").innerHTML = data_json['direction'];
+        }
+        if (data_json['speed'] != "") {
+            document.getElementById("speed").innerHTML = data_json['speed'];
+        }
+        if (data_json['speed'] != "") {
+            document.getElementById("distance").innerHTML = data_json['distance'];
+        }
+        if (data_json['speed'] != "") {
+            document.getElementById("temperature").innerHTML = data_json['temp'];
+        }
         console.log(data_json);
         client.end();
         client.destroy();
@@ -125,9 +134,7 @@ function resetKey(e) {
 function run_client() {
     setInterval(function(){
         // get image from python server
-        client(data_tobe_sent);
-        data_tobe_sent = UPDATE
-        // console.log("client sending data");
-    }, 100);
+        client(UPDATE);
+    }, 1500);
 }
 

@@ -12,6 +12,7 @@ RIGHT = "RIGHT"
 STOP = "STOP"
 SPEEDUP = "SPEEDUP"
 SPEEDDOWN = "SPEEDDOWN"
+UPDATE = "UPDATE"
 IDLE = 0
 STOP_INTERVAL = 0.1
 HOST = "192.168.1.128" # IP address of your Raspberry PI
@@ -85,8 +86,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 data = client.recv(1024)      # receive 1024 Bytes of message in binary format
                 data = data.decode("utf-8")
                 process_data(data)
+                direction = ""
+                if data not in [STOP, SPEEDUP, SPEEDDOWN, UPDATE]:
+                    direction = data.lower()
                 ret_data = {
-                    'direction': data.lower(),
+                    'direction': direction,
                     'power': str(round(fc.power_read(), 2)) + "V",
                     'speed': str(round(fc.speed_val(), 2)) + "cm/s",
                     'distance': str(round(distance_covered, 2)) + "cm",
