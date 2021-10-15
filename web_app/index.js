@@ -87,7 +87,6 @@ function client(data="") {
         if (data_json['servo'] != "") {
             document.getElementById("servo").innerHTML = data_json['servo'];
         }
-        console.log(data_json);
         client.end();
         client.destroy();
     });

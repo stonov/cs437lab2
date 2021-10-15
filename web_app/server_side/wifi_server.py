@@ -29,9 +29,9 @@ speedometer: Thread = None
 
 def turn_servo(dir: int, at=18):
     if dir == 0:
-        fc.angle_distance = min(fc.max_angle, fc.current_angle + at)
+        fc.current_angle = min(fc.max_angle, fc.current_angle + at)
     else:
-        fc.angle_distance = max(fc.min_angle, fc.current_angle - at)
+        fc.current_angle = max(fc.min_angle, fc.current_angle - at)
     print("changing the angle")
     fc.servo.set_angle(fc.current_angle)
 
@@ -90,7 +90,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 client, clientInfo = s.accept()
                 data = client.recv(1024)      # receive 1024 Bytes of message in binary format
                 data = data.decode("utf-8")
-                print("From {}: {}".format(clientInfo, data))
+                print("From {}: {}".format(clientInfo[0], data))
                 process_data(data)
                 direction = ""
                 if data not in [STOP, SPEEDUP, SPEEDDOWN, UPDATE]:
