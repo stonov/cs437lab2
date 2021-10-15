@@ -1,5 +1,7 @@
 import socket
 import picar_4wd as fc
+import random
+import json
 from time import sleep
 
 FROWARD = "FORWARD"
@@ -36,10 +38,10 @@ def process_data(data=""):
             fc.forward(IDLE)
         elif data == SPEEDUP:
             print("speeding up")
-            speed += 10
+            speed = min(100, speed+10)
         elif data == SPEEDDOWN:
             print("slowing down")
-            speed -= 10
+            speed = max(0, speed-10)
         else:
             print(data)
         sleep(STOP_INTERVAL)
@@ -48,14 +50,29 @@ def process_data(data=""):
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
     s.listen()
-
+    print("Listening....")
     try:
         while 1:
             client, clientInfo = s.accept()
             print("server recv from: ", clientInfo)
             data = client.recv(1024)      # receive 1024 Bytes of message in binary format
-            process_data(data.decode("utf-8"))
+            data = data.decode("utf-8")
+            process_data(data)
+            ret_data = {
+                'direction': data,
+                'power': fc.power_read(),
+                'speed': speed,
+                'distance': random.randint(1, 5),
+                'temp': fc.cpu_temperature()
+            }
+            print("data to send: {}".format(ret_data))
+            try:
+                client.sendall(\
+                    bytes(json.dumps(ret_data)\
+                        , "utf-8"))
+            except Exception as e:
+                print(e)
     except: 
         print("Closing socket")
         client.close()
-        s.close()    
+        s.close()
