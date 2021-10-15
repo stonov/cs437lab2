@@ -17,7 +17,7 @@ IDLE = 0
 STOP_INTERVAL = 0.1
 HOST = "192.168.1.128" # IP address of your Raspberry PI
 PORT = 65432          # Port to listen on (non-privileged ports are > 1023)
-speed = 50
+power_val = 50
 distance_covered = 0.0
 speed_cumlative = 0.0
 speed_num = 0
@@ -45,30 +45,30 @@ def fire_up_thread():
     speedometer.start()
 
 def process_data(data=""):
-    global speed
+    global power_val
 
     if data != "":
         if data == FROWARD:
             print("moving forward")
-            fc.forward(power=speed)
+            fc.forward(power=power_val)
         elif data == BACKWARD:
             print("moving backward")
-            fc.backward(power=speed)
+            fc.backward(power=power_val)
         elif data == RIGHT:
             print("moving right")
-            fc.turn_right(power=speed)
+            fc.turn_right(power=power_val)
         elif data == LEFT:
             print("moving left")
-            fc.turn_left(power=speed)
+            fc.turn_left(power=power_val)
         elif data == STOP:
             print("stopping")
             fc.forward(IDLE)
         elif data == SPEEDUP:
             print("speeding up")
-            speed = min(100, speed+10)
+            power_val = min(100, power_val+10)
         elif data == SPEEDDOWN:
             print("slowing down")
-            speed = max(10, speed-10)
+            power_val = max(10, power_val-10)
         else:
             print(data)
         print("after")
@@ -91,19 +91,17 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 if data not in [STOP, SPEEDUP, SPEEDDOWN, UPDATE]:
                     direction = data.lower()
                 power = str(round(fc.power_read(), 2)) + "V"
-                speed = str(round(fc.speed_val(), 2)) + "cm/s"
+                speed_val = str(round(fc.speed_val(), 2)) + "cm/s"
                 distance = str(round(distance_covered, 2)) + "cm"
                 temp = str(round(fc.cpu_temperature(), 2)) + "C"
                 ret_data = {
                     'direction': direction,
                     'power': power,
-                    'speed': speed,
+                    'speed': speed_val,
                     'distance': distance,
                     'temp': temp
                 }
-                client.sendall(\
-                    bytes(json.dumps(ret_data)\
-                        , "utf-8"))
+                client.sendall(bytes(json.dumps(ret_data), "utf-8"))
             except Exception as e:
                 print(e)
     except:
