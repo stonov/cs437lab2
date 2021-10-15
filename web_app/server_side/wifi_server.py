@@ -87,10 +87,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             try:
                 ret_data = {
                     'direction': data.lower(),
-                    'power': str(round(fc.power_read(), 2) + "V"),
-                    'speed': str(round(fc.speed_val(), 2) + "cm/s"),
-                    'distance': str(round(distance_covered, 2) + "cm"),
-                    'temp': str(round(fc.cpu_temperature(), 2) + "C")
+                    'power': str(round(fc.power_read(), 2)) + "V",
+                    'speed': str(round(fc.speed_val(), 2)) + "cm/s",
+                    'distance': str(round(distance_covered, 2)) + "cm",
+                    'temp': str(round(fc.cpu_temperature(), 2)) + "C"
                 }
                 client.sendall(\
                     bytes(json.dumps(ret_data)\
