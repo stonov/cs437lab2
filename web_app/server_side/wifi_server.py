@@ -98,8 +98,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 print(e)
     except: 
         print("Closing socket")
-        fc.left_rear_speed.join()
-        fc.right_rear_speed.join()
+        fc.left_rear_speed.deinit()
+        fc.right_rear_speed.deinit()
         speedometer.join()
+        running = 0
         client.close()
         s.close()
