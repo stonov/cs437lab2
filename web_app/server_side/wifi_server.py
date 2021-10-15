@@ -5,6 +5,8 @@ import json
 from time import *
 from threading import *
 
+from web_app.server_side.picar_4wd import servo
+
 FROWARD = "FORWARD"
 BACKWARD = "BACKWARD"
 LEFT = "LEFT"
@@ -26,14 +28,16 @@ speed_num = 0
 avg_speed = 0.0
 running = 1
 speedometer: Thread = None
+servo_angle = 0
 
 def turn_servo(dir: int, at=18):
+    global servo_angle
+
     if dir == 0:
-        fc.current_angle = min(fc.max_angle, fc.current_angle + at)
+        servo_angle = min(fc.max_angle, servo_angle + at)
     else:
-        fc.current_angle = max(fc.min_angle, fc.current_angle - at)
-    print("changing the angle")
-    fc.servo.set_angle(fc.current_angle)
+        servo_angle = max(fc.min_angle, servo_angle - at)
+    fc.servo.set_angle(servo_angle)
 
 def speedometer_handler():
     global speed_num
@@ -51,6 +55,7 @@ def speedometer_handler():
 def fire_up_thread():
     global speedometer
 
+    fc.start_speed_thread()
     speedometer = Thread(target=speedometer_handler)
     speedometer.start()
 
@@ -78,12 +83,12 @@ def process_data(data=""):
             fc.stop()
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.bind((HOST, PORT))
-    s.listen()
-    fc.start_speed_thread()
-    fire_up_thread()
-    print("Listening....")
     try:
+        s.bind((HOST, PORT))
+        s.listen()
+        fc.servo.set_angle(servo_angle)
+        fire_up_thread()
+        print("Listening....")
         while 1:
             try:
                 print("----------------")
