@@ -44,8 +44,6 @@ def process_data(data=""):
             speed = max(10, speed-10)
         else:
             print(data)
-        sleep(STOP_INTERVAL)
-        fc.forward(IDLE)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
