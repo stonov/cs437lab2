@@ -38,6 +38,8 @@ def speedometer_handler():
         distance_covered += ((first_speed + current_speed)/2) * 1
 
 def fire_up_thread():
+    global speedometer
+    
     speedometer = Thread(target=speedometer_handler)
     speedometer.start()
 
