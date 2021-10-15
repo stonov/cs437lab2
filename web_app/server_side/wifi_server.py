@@ -79,12 +79,12 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     print("Listening....")
     try:
         while 1:
-            client, clientInfo = s.accept()
-            print("server recv from: ", clientInfo)
-            data = client.recv(1024)      # receive 1024 Bytes of message in binary format
-            data = data.decode("utf-8")
-            process_data(data)
             try:
+                client, clientInfo = s.accept()
+                print("server recv from: ", clientInfo)
+                data = client.recv(1024)      # receive 1024 Bytes of message in binary format
+                data = data.decode("utf-8")
+                process_data(data)
                 ret_data = {
                     'direction': data.lower(),
                     'power': str(round(fc.power_read(), 2)) + "V",
