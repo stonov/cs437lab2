@@ -89,16 +89,18 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 direction = ""
                 if data not in [STOP, SPEEDUP, SPEEDDOWN, UPDATE]:
                     direction = data.lower()
+                power = str(round(fc.power_read(), 2)) + "V"
+                speed = str(round(fc.speed_val(), 2)) + "cm/s"
+                distance = str(round(distance_covered, 2)) + "cm"
+                temp = str(round(fc.cpu_temperature(), 2)) + "C"
                 ret_data = {
                     'direction': direction,
-                    'power': str(round(fc.power_read(), 2)) + "V",
-                    'speed': str(round(fc.speed_val(), 2)) + "cm/s",
-                    'distance': str(round(distance_covered, 2)) + "cm",
-                    'temp': str(round(fc.cpu_temperature(), 2)) + "C"
+                    'power': power,
+                    'speed': speed,
+                    'distance': distance,
+                    'temp': temp
                 }
-                client.sendall(\
-                    bytes(json.dumps(ret_data)\
-                        , "utf-8"))
+                client.sendall(bytes(json.dumps(ret_data), "utf-8"))
             except Exception as e:
                 print(e)
     except:

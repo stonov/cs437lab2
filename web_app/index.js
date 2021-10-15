@@ -135,6 +135,6 @@ function run_client() {
     setInterval(function(){
         // get image from python server
         client(UPDATE);
-    }, 1500);
+    }, 1000);
 }
 
