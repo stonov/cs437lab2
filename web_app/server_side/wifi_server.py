@@ -71,6 +71,7 @@ def process_data(data=""):
             speed = max(10, speed-10)
         else:
             print(data)
+        print("after")
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
@@ -100,7 +101,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     'distance': distance,
                     'temp': temp
                 }
-                client.sendall(bytes(json.dumps(ret_data), "utf-8"))
+                client.sendall(\
+                    bytes(json.dumps(ret_data)\
+                        , "utf-8"))
             except Exception as e:
                 print(e)
     except:
