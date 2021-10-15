@@ -41,7 +41,7 @@ function sendSpeedDown() {
     data_tobe_sent = SPEEDDOWN
 }
 
-function client(data=""){
+function client(data="") {
     if (data == "") {
         return;
     }
@@ -55,8 +55,13 @@ function client(data=""){
 
     // get the data from the server
     client.on('data', (data) => {
-        document.getElementById("bluetooth").innerHTML = data;
-        console.log(data.toString());
+        data_json = JSON.parse(data.toString())
+        document.getElementById("power").innerHTML = data_json['power'];
+        document.getElementById("direction").innerHTML = data_json['direction'];
+        document.getElementById("speed").innerHTML = data_json['speed'];
+        document.getElementById("distance").innerHTML = data_json['distance'];
+        document.getElementById("temperature").innerHTML = data_json['temp'];
+        console.log(data_json);
         client.end();
         client.destroy();
     });
@@ -121,6 +126,7 @@ function run_client() {
         // get image from python server
         client(data_tobe_sent);
         data_tobe_sent = ""
+        // console.log("client sending data");
     }, 100);
 }
 
