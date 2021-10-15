@@ -1,7 +1,7 @@
 document.onkeydown = updateKey;
 document.onkeyup = resetKey;
 
-FROWARD = "FORWARD"
+FORWARD = "FORWARD"
 BACKWARD = "BACKWARD"
 LEFT = "LEFT"
 RIGHT = "RIGHT"
@@ -14,7 +14,7 @@ var server_addr = "192.168.1.128";   // the IP address of your Raspberry PI
 var data_tobe_sent = ""
 
 function sendMoveForwardCommand() {
-    data_tobe_sent = FROWARD
+    data_tobe_sent = FORWARD
 }
 
 function sendMoveBackwardCommand() {

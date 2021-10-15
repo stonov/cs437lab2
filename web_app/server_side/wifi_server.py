@@ -61,7 +61,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             ret_data = {
                 'direction': data,
                 'power': fc.power_read(),
-                'speed': speed,
+                'speed': fc.speed_val(),
                 'distance': random.randint(1, 5),
                 'temp': fc.cpu_temperature()
             }
