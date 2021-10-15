@@ -8,10 +8,11 @@ RIGHT = "RIGHT"
 STOP = "STOP"
 SPEEDUP = "SPEEDUP"
 SPEEDDOWN = "SPEEDDOWN"
+UPDATE = "UPDATE"
 
 var server_port = 65432;
 var server_addr = "192.168.1.128";   // the IP address of your Raspberry PI
-var data_tobe_sent = ""
+var data_tobe_sent = UPDATE
 
 function sendMoveForwardCommand() {
     data_tobe_sent = FORWARD
@@ -125,7 +126,7 @@ function run_client() {
     setInterval(function(){
         // get image from python server
         client(data_tobe_sent);
-        data_tobe_sent = ""
+        data_tobe_sent = UPDATE
         // console.log("client sending data");
     }, 100);
 }
