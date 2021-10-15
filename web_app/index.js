@@ -144,6 +144,14 @@ function updateKey(e) {
     }
 }
 
+const connectToDeviceAndSubscribeToUpdates = async () => {
+    const device = await navigator.bluetooth
+       .requestDevice({
+           filters: [{ services: ['battery_service']}]
+       });
+       console.log(device)
+ };
+
 // reset the key to the start state 
 function resetKey(e) {
 
