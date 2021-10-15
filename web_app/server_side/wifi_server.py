@@ -22,6 +22,7 @@ speed_cumlative = 0.0
 speed_num = 0
 avg_speed = 0.0
 running = 1
+speedometer: Thread = None
 
 def speedometer_handler():
     global speed_num
@@ -99,5 +100,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 print(e)
     except: 
         print("Closing socket")
+        fc.left_rear_speed.join()
+        fc.right_rear_speed.join()
+        speedometer.join()
         client.close()
         s.close()
