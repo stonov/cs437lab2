@@ -32,12 +32,10 @@ def speedometer_handler():
     global running
 
     while running:
+        first_speed = fc.speed_val()
+        sleep(1)
         current_speed = fc.speed_val()
-        distance_covered += current_speed * 0.5
-        speed_num += 1
-        speed_cumlative += current_speed
-        avg_speed = round(speed_cumlative/speed_num, 2)
-        sleep(0.5)
+        distance_covered += ((first_speed + current_speed)/2) * 1
 
 def fire_up_thread():
     speedometer = Thread(target=speedometer_handler)
@@ -86,10 +84,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             process_data(data)
             ret_data = {
                 'direction': data,
-                'power': fc.power_read(),
-                'speed': fc.speed_val(),
-                'distance': distance_covered,
-                'temp': fc.cpu_temperature()
+                'power': round(fc.power_read(), 2),
+                'speed': round(fc.speed_val(), 2),
+                'distance': round(distance_covered, 2),
+                'temp': round(fc.cpu_temperature(), 2)
             }
             print("data to send: {}".format(ret_data))
             try:
