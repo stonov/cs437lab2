@@ -89,7 +89,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         print("Listening....")
         while 1:
             try:
-                print("----------------")
                 client, clientInfo = s.accept()
                 data = client.recv(1024)      # receive 1024 Bytes of message in binary format
                 data = data.decode("utf-8")
