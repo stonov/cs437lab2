@@ -77,7 +77,7 @@ def process_data(data=""):
             turn_servo(1)
         elif data == SERVO_LEFT:
             turn_servo(0)
-        else:
+        elif data == STOP:
             fc.stop()
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
