@@ -83,13 +83,13 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             data = data.decode("utf-8")
             process_data(data)
             ret_data = {
-                'direction': data,
-                'power': round(fc.power_read(), 2),
-                'speed': round(fc.speed_val(), 2),
-                'distance': round(distance_covered, 2),
-                'temp': round(fc.cpu_temperature(), 2)
+                'direction': data.lower(),
+                'power': str(round(fc.power_read(), 2) + "V"),
+                'speed': str(round(fc.speed_val(), 2) + "cm/s"),
+                'distance': str(round(distance_covered, 2) + "cm"),
+                'temp': str(round(fc.cpu_temperature(), 2) + "C")
             }
-            print("data to send: {}".format(ret_data))
+            # print("data to send: {}".format(ret_data))
             try:
                 client.sendall(\
                     bytes(json.dumps(ret_data)\
