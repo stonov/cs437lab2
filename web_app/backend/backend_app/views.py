@@ -1,10 +1,9 @@
-from bluetooth.macos import BluetoothSocket
 from django.shortcuts import render
 import bluetooth
 
-HOST = "DC:A6:32:80:7D:87" # The address of Raspberry PI Bluetooth adapter on the server.
+HOST = "E4:5F:01:43:7F:A9" # The address of Raspberry PI Bluetooth adapter on the server.
 PORT = 1
-sock: BluetoothSocket = None
+sock: bluetooth.BluetoothSocket = None
 
 def home(request):
     global sock
