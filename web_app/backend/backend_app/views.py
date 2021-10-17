@@ -10,4 +10,4 @@ def home(request):
     if sock is None:
         sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
         sock.connect((HOST, PORT))
-    return render(request, "sock is something")
+    return render(request, "backend_app/base.html", {'sock': sock})
