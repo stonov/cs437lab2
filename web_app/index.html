@@ -38,7 +38,6 @@
         </div>
 
         <div class="jumbotron text-left col-md-6">
-          <button class="btn btn-success" onclick="FindBluetoothDevices()" id="ble-finder">Connect to Bluetooth Devices</button>
           <input id="message" type="text" placeholder="message to Pi"/>
           <button class="btn btn-success" onclick="connectToDeviceAndSubscribeToUpdates()">Sumbit</button>
             <p>
@@ -47,6 +46,8 @@
               <span id="direction_dot" style="color:Green">&bull;</span> Car Direction: <span id="direction"></span>
             <br>
             <span id="speed_dot" style="color:green">&bull;</span> Speed: <span id="speed"></span>  
+            <br>
+            <span id="speed_percent_dot" style="color:green">&bull;</span> Speed %: <span id="speed_percent"></span>  
             <br>
             <span id="distance_dot" style="color:green">&bull;</span> Distance Traveled: <span id="distance"></span>
             <br>

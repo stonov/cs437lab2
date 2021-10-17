@@ -77,10 +77,13 @@ function processServerData(data) {
     if (data_json['speed'] != "") {
         document.getElementById("speed").innerHTML = data_json['speed'];
     }
-    if (data_json['speed'] != "") {
+    if (data_json['speed_percent'] != "") {
+        document.getElementById("speed_percent").innerHTML = data_json['power_val'];
+    }
+    if (data_json['distance'] != "") {
         document.getElementById("distance").innerHTML = data_json['distance'];
     }
-    if (data_json['speed'] != "") {
+    if (data_json['temperature'] != "") {
         document.getElementById("temperature").innerHTML = data_json['temp'];
     }
     if (data_json['ultra'] != "") {

@@ -61,43 +61,56 @@ def process_data(data=""):
         elif data == STOP:
             fc.stop()
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    try:
-        fire_up_thread()
-        s.bind((HOST, PORT))
-        s.listen()
+def send_feedback(data):
+    direction = ""
+    if data not in [STOP, SPEEDUP, SPEEDDOWN, UPDATE]:
+        direction = data.lower()
+    power = str(round(fc.power_read(), 2)) + "V"
+    speed_val = str(round(fc.speed_val(), 2)) + "cm/s"
+    distance = str(round(distance_covered, 2)) + "cm"
+    temp = str(round(fc.cpu_temperature(), 2)) + "C"
+    ultra_val = str(round(fc.get_distance_at(0))) + "cm"
+    ret_data = {
+        'direction': direction,
+        'power': power,
+        'speed': speed_val,
+        'distance': distance,
+        'temp': temp,
+        'ultra': ultra_val
+    }
+    return json.dumps(ret_data)
+
+
+def run_server():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        try:
+            s.bind((HOST, PORT))
+            s.listen()
+        except Exception as e:
+            print("Closing Socket With Exception {}".format(e))
         print("Listening....")
         while 1:
             try:
                 client, clientInfo = s.accept()
-                data = client.recv(1024)      # receive 1024 Bytes of message in binary format
+                data = client.recv(1024)
                 data = data.decode("utf-8")
                 print("From {}: {}".format(clientInfo[0], data))
                 process_data(data)
-                direction = ""
-                if data not in [STOP, SPEEDUP, SPEEDDOWN, UPDATE]:
-                    direction = data.lower()
-                power = str(round(fc.power_read(), 2)) + "V"
-                speed_val = str(round(fc.speed_val(), 2)) + "cm/s"
-                distance = str(round(distance_covered, 2)) + "cm"
-                temp = str(round(fc.cpu_temperature(), 2)) + "C"
-                ultra_val = str(round(fc.get_distance_at(0))) + "cm"
-                ret_data = {
-                    'direction': direction,
-                    'power': power,
-                    'speed': speed_val,
-                    'distance': distance,
-                    'temp': temp,
-                    'ultra': ultra_val
-                }
-                client.sendall(bytes(json.dumps(ret_data), "utf-8"))
+                client.sendall(bytes(send_feedback(data), "utf-8"))
             except Exception as e:
                 print(e)
-    except:
-        print("Closing socket")
-        fc.left_rear_speed.deinit()
-        fc.right_rear_speed.deinit()
-        speedometer.join()
-        running = 0
         client.close()
         s.close()
+
+def stop_thread():
+    global running 
+
+    fc.left_rear_speed.deinit()
+    fc.right_rear_speed.deinit()
+    speedometer.join()
+    running = 0
+
+if __name__ == "__main__":
+    fire_up_thread()
+    run_server()
+    stop_thread()
