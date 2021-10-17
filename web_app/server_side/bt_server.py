@@ -104,8 +104,7 @@ def run_server():
             data = data.decode("utf-8")
             process_client_data(data, clientInfo)
             car_stats = send_feedback(data)
-            print(car_stats)
-            client.send("hello")
+            client.send(car_stats)
     except Exception as e:
         print("Closing socket with Exception: {}".format(e))
         client.close()
