@@ -65,28 +65,7 @@ function client(data="") {
 
     // get the data from the server
     client.on('data', (data) => {
-        data_json = JSON.parse(data.toString())
-        if (data_json['power'] != "") {
-            document.getElementById("power").innerHTML = data_json['power'];
-        }
-        if (data_json['direction'] != "") {
-            document.getElementById("direction").innerHTML = data_json['direction'];
-        }
-        if (data_json['speed'] != "") {
-            document.getElementById("speed").innerHTML = data_json['speed'];
-        }
-        if (data_json['speed'] != "") {
-            document.getElementById("distance").innerHTML = data_json['distance'];
-        }
-        if (data_json['speed'] != "") {
-            document.getElementById("temperature").innerHTML = data_json['temp'];
-        }
-        if (data_json['ultra'] != "") {
-            document.getElementById("ultra").innerHTML = data_json['ultra'];
-        }
-        if (data_json['servo'] != "") {
-            document.getElementById("servo").innerHTML = data_json['servo'];
-        }
+        processServerData(data);
         client.end();
         client.destroy();
     });
@@ -98,10 +77,34 @@ function client(data="") {
 
 }
 
+function processServerData(data) {
+    data_json = JSON.parse(data.toString())
+    if (data_json['power'] != "") {
+        document.getElementById("power").innerHTML = data_json['power'];
+    }
+    if (data_json['direction'] != "") {
+        document.getElementById("direction").innerHTML = data_json['direction'];
+    }
+    if (data_json['speed'] != "") {
+        document.getElementById("speed").innerHTML = data_json['speed'];
+    }
+    if (data_json['speed'] != "") {
+        document.getElementById("distance").innerHTML = data_json['distance'];
+    }
+    if (data_json['speed'] != "") {
+        document.getElementById("temperature").innerHTML = data_json['temp'];
+    }
+    if (data_json['ultra'] != "") {
+        document.getElementById("ultra").innerHTML = data_json['ultra'];
+    }
+    if (data_json['servo'] != "") {
+        document.getElementById("servo").innerHTML = data_json['servo'];
+    }
+}
+
 // for detecting which key is been pressed w,a,s,d
 function updateKey(e) {
     e = e || window.event;
-    console.log(e.keyCode);
     if (e.keyCode == '87') {
         // up (w)
         document.getElementById("upArrow").style.color = "green";
@@ -143,14 +146,6 @@ function updateKey(e) {
         sendServoLeftCommand();
     }
 }
-
-const connectToDeviceAndSubscribeToUpdates = async () => {
-    const device = await navigator.bluetooth
-       .requestDevice({
-           filters: [{ services: ['battery_service']}]
-       });
-       console.log(device)
- };
 
 // reset the key to the start state 
 function resetKey(e) {
