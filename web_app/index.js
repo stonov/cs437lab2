@@ -9,8 +9,6 @@ const STOP = "STOP"
 const SPEEDUP = "SPEEDUP"
 const SPEEDDOWN = "SPEEDDOWN"
 const UPDATE = "UPDATE"
-const SERVO_RIGHT = "SERVO_RIGHT"
-const SERVO_LEFT = "SERVO_LEFT"
 
 var server_port = 65432;
 var server_addr = "192.168.1.131";   // the IP address of your Raspberry PI
@@ -43,14 +41,6 @@ function sendSpeedDown() {
     client(SPEEDDOWN);
 }
 
-function sendServoLeftCommand() {
-    client(SERVO_LEFT)
-}
-
-function sendServoRightCommand() {
-    client(SERVO_RIGHT)
-}
-
 function client(data="") {
     if (data == "") {
         return;
@@ -74,7 +64,6 @@ function client(data="") {
         console.log('disconnected from server');
     });
 
-
 }
 
 function processServerData(data) {
@@ -96,9 +85,6 @@ function processServerData(data) {
     }
     if (data_json['ultra'] != "") {
         document.getElementById("ultra").innerHTML = data_json['ultra'];
-    }
-    if (data_json['servo'] != "") {
-        document.getElementById("servo").innerHTML = data_json['servo'];
     }
 }
 
@@ -136,14 +122,6 @@ function updateKey(e) {
     else if (e.keyCode == '189') {
         // decrease speed (e)
         sendSpeedDown();
-    }
-    else if (e.keyCode == '77') {
-        // turn servo right (e)
-        sendServoRightCommand();
-    }
-    else if (e.keyCode == '78') {
-        // turn servo left (e)
-        sendServoLeftCommand();
     }
 }
 

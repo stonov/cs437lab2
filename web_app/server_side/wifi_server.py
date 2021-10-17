@@ -11,8 +11,6 @@ RIGHT = "RIGHT"
 STOP = "STOP"
 SPEEDUP = "SPEEDUP"
 SPEEDDOWN = "SPEEDDOWN"
-SERVO_RIGHT = "SERVO_RIGHT"
-SERVO_LEFT = "SERVO_LEFT"
 UPDATE = "UPDATE"
 IDLE = 0
 STOP_INTERVAL = 0.1
@@ -25,16 +23,6 @@ speed_num = 0
 avg_speed = 0.0
 running = 1
 speedometer: Thread = None
-servo_angle = 0
-
-def turn_servo(dir: int, at=18):
-    global servo_angle
-
-    if dir == 0:
-        servo_angle = min(fc.max_angle, servo_angle + at)
-    else:
-        servo_angle = max(fc.min_angle, servo_angle - at)
-    fc.servo.set_angle(servo_angle)
 
 def speedometer_handler():
     global speed_num
@@ -72,10 +60,6 @@ def process_data(data=""):
             power_val = min(100, power_val+10)
         elif data == SPEEDDOWN:
             power_val = max(10, power_val-10)
-        elif data == SERVO_RIGHT:
-            turn_servo(1)
-        elif data == SERVO_LEFT:
-            turn_servo(0)
         elif data == STOP:
             fc.stop()
 
@@ -83,7 +67,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     try:
         s.bind((HOST, PORT))
         s.listen()
-        fc.servo.set_angle(servo_angle)
         fire_up_thread()
         print("Listening....")
         while 1:
@@ -101,15 +84,13 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 distance = str(round(distance_covered, 2)) + "cm"
                 temp = str(round(fc.cpu_temperature(), 2)) + "C"
                 ultra_val = str(round(fc.get_distance_at(0))) + "cm"
-                servo_angle_val = str(servo_angle)
                 ret_data = {
                     'direction': direction,
                     'power': power,
                     'speed': speed_val,
                     'distance': distance,
                     'temp': temp,
-                    'ultra': ultra_val,
-                    'servo': servo_angle_val
+                    'ultra': ultra_val
                 }
                 client.sendall(bytes(json.dumps(ret_data), "utf-8"))
             except Exception as e:
