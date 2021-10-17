@@ -19,6 +19,9 @@
     "electron": "^10.4.7"
   },
   "dependencies": {
+    "build": "^0.1.4",
+    "configure": "0.0.1",
+    "node-gyp": "^8.2.0",
     "require": "^2.4.20"
   }
 }
