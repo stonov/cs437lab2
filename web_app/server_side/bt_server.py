@@ -88,7 +88,7 @@ def send_feedback(data):
         'temp': temp,
         'ultra': ultra_val
     }
-    return bytes(json.dumps(ret_data), "utf-8")
+    return json.dumps(ret_data)
 
 def run_server():
     global socket
