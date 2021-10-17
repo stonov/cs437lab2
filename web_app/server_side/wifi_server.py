@@ -65,9 +65,9 @@ def process_data(data=""):
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     try:
+        fire_up_thread()
         s.bind((HOST, PORT))
         s.listen()
-        fire_up_thread()
         print("Listening....")
         while 1:
             try:
