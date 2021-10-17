@@ -15,6 +15,7 @@ try:
         print("server recv from: ", clientInfo)
         data = client.recv(size)
         if data:
+            data = data.decode("utf-8")
             print(data)
             if data == INITIALIZED_TEXT:
                 client.send("connection Initialized")
