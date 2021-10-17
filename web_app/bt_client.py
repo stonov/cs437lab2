@@ -11,12 +11,12 @@ COMMANDS = {
     'w': FROWARD,
     's': BACKWARD,
     'd': RIGHT,
-    'a': LEFT, 
+    'a': LEFT,
     'q': STOP,
     '+': SPEEDUP,
     '-': SPEEDDOWN
 }
-STARTUP_MSG = "Commands are as such:\n\tw -> FROWARD\n\ts -> BACKWARD\n\ta -> LEFT\n\td -> RIGHT\n\tq -> STOP\n\t+ -> SPEEDUP\n\t- -> SPEEDDOWN"
+STARTUP_MSG = "Commands are as such:\n\tw -> FROWARD\n\ts -> BACKWARD\n\ta -> LEFT\n\td -> RIGHT\n\tq -> STOP\n\t+ -> SPEEDUP\n\t- -> SPEEDDOWN\nPress Enter after The Letter"
 
 HOST_MAC_ADDRESS = "E4:5F:01:43:7F:A9" # The address of Raspberry PI Bluetooth adapter on the server. The server might have multiple Bluetooth adapters.
 PORT = 1
