@@ -24,10 +24,6 @@ MSG_SIZE = 1024
 
 sock: bluetooth.BluetoothSocket = None
 
-
-
-sock.close()
-
 def run_client():
     global sock
 
@@ -48,5 +44,6 @@ def run_client():
 if __name__ == "__main__":
     print(STARTUP_MSG)
     run_client()
+    sock.close()
 
 
