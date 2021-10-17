@@ -29,7 +29,7 @@ def run_client():
 
     sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
     sock.connect((HOST_MAC_ADDRESS, PORT))
-
+    print("Waiting To Connect....")
     while 1:
         text = input("Enter Command #: ")
         if text == "quit":
