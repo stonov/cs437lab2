@@ -33,6 +33,7 @@ def run_client():
     while 1:
         text = input("Enter Command #: ")
         if text == "quit":
+            sock.send(command)
             break
         command = COMMANDS['q']
         if text in COMMANDS.keys():

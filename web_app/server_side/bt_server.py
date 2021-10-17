@@ -102,6 +102,8 @@ def run_server():
         while True:
             data = client.recv(MSG_SIZE)
             data = data.decode("utf-8")
+            if data == "quit":
+                break
             process_client_data(data, clientInfo)
             car_stats = send_feedback(data)
             client.send(car_stats)
