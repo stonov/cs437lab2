@@ -62,6 +62,8 @@ def process_data(data=""):
             fc.stop()
 
 def send_feedback(data):
+    global power_val
+    
     direction = ""
     if data not in [STOP, SPEEDUP, SPEEDDOWN, UPDATE]:
         direction = data.lower()
@@ -76,7 +78,8 @@ def send_feedback(data):
         'speed': speed_val,
         'distance': distance,
         'temp': temp,
-        'ultra': ultra_val
+        'ultra': ultra_val,
+        'power_val': power_val
     }
     return json.dumps(ret_data)
 
