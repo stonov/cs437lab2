@@ -14,5 +14,6 @@ def home(request):
         text = INITIALIZED_TEXT
         sock.send(text)
         data_returned = sock.recv(1024)
+        data_returned = data_returned.decode("utf-8")
         return render(request, "backend_app/base.html", {'sock': sock, 'returned_val': data_returned})
     return render(request, "backend_app/base.html", {'sock': sock, 'returned_val': 'NULL'})
