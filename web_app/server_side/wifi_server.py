@@ -1,6 +1,5 @@
 import socket
 import picar_4wd as fc
-import random
 import json
 from time import *
 from threading import *
@@ -17,7 +16,7 @@ SERVO_LEFT = "SERVO_LEFT"
 UPDATE = "UPDATE"
 IDLE = 0
 STOP_INTERVAL = 0.1
-HOST = "192.168.1.128" # IP address of your Raspberry PI
+HOST = "192.168.1.131" # IP address of your Raspberry PI
 PORT = 65432          # Port to listen on (non-privileged ports are > 1023)
 power_val = 50
 distance_covered = 0.0

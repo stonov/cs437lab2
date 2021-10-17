@@ -13,7 +13,7 @@ const SERVO_RIGHT = "SERVO_RIGHT"
 const SERVO_LEFT = "SERVO_LEFT"
 
 var server_port = 65432;
-var server_addr = "192.168.1.128";   // the IP address of your Raspberry PI
+var server_addr = "192.168.1.131";   // the IP address of your Raspberry PI
 
 function sendMoveForwardCommand() {
     client(FORWARD);

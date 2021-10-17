@@ -21,5 +21,6 @@ from . import views
 
 urlpatterns = [
     path('', view=views.home, name=""),
-    path('send_data/', view=views.send_data, name="send_data")
+    path('send_data/', view=views.send_data, name="send_data"),
+    path('recieve_data/', view=views.recieve_data, name="recieve_data")
 ]
