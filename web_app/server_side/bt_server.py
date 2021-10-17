@@ -103,7 +103,9 @@ def run_server():
         while True:
             data = client.recv(MSG_SIZE)
             process_client_data(data, clientInfo)
-            client.send(send_feedback(data))
+            car_stats = send_feedback(data)
+            print(car_stats)
+            client.send("hello")
     except Exception as e:
         print("Closing socket with Exception: {}".format(e))
         client.close()
