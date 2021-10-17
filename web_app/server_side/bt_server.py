@@ -4,6 +4,7 @@ hostMACAddress = "E4:5F:01:43:7F:A9" # The address of Raspberry PI Bluetooth ada
 port = 1
 backlog = 1
 size = 1024
+INITIALIZED_TEXT = "INITIALIZED_TEXT"
 s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 s.bind((hostMACAddress, port))
 s.listen(backlog)
@@ -15,9 +16,12 @@ try:
         data = client.recv(size)
         if data:
             print(data)
-            client.send(data) # Echo back to client
-except: 
-    print("Closing socket")
+            if data == INITIALIZED_TEXT:
+                client.send("connection Initialized")
+            else:
+                client.send(data) # Echo back to client
+except Exception as e:
+    print("Closing socket with Exception: {}".format(e))
     client.close()
     s.close()
 
