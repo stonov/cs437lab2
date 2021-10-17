@@ -67,7 +67,6 @@ def process_data(data=""):
             fc.stop()
 
 def process_client_data(data, clientInfo):
-    data = data.decode("utf-8")
     print("From {}: {}".format(clientInfo[0], data))
     process_data(data)
 
@@ -102,6 +101,7 @@ def run_server():
         client, clientInfo = socket.accept()
         while True:
             data = client.recv(MSG_SIZE)
+            data = data.decode("utf-8")
             process_client_data(data, clientInfo)
             car_stats = send_feedback(data)
             print(car_stats)
