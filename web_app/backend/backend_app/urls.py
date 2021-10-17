@@ -17,8 +17,9 @@ from django.contrib import admin
 from django.urls import path, include
 from . import views
 
-# app_name = 'asset_management_app'
+# app_name = 'backend_app'
 
 urlpatterns = [
     path('', view=views.home, name=""),
+    path('send_data/', view=views.send_data, name="send_data")
 ]

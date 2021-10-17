@@ -16,4 +16,15 @@ def home(request):
         data_returned = sock.recv(1024)
         data_returned = data_returned.decode("utf-8")
         return render(request, "backend_app/base.html", {'sock': sock, 'returned_val': data_returned})
+    return render(request, "backend_app/base.html", {'sock': sock, 'returned_val': 'sock is not null'})
+
+def send_data(request):
+    global sock
+    data = str(request.POST.get('data'))
+    print(data)
+    if sock is not None:
+        sock.send(data)
+        data_returned = sock.recv(1024)
+        data_returned = data_returned.decode("utf-8")
+        return render(request, "backend_app/base.html", {'sock': sock, 'returned_val': data_returned})
     return render(request, "backend_app/base.html", {'sock': sock, 'returned_val': 'NULL'})
