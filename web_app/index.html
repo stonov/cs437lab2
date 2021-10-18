@@ -39,7 +39,7 @@
 
         <div class="jumbotron text-left col-md-6">
           <input id="message" type="text" placeholder="message to Pi"/>
-          <button class="btn btn-success" onclick="connectToDeviceAndSubscribeToUpdates()">Sumbit</button>
+          <button class="btn btn-success" onclick="client('message')">Sumbit</button>
             <p>
             <span id="power_dot" style="color:Green">&bull;</span> Power: <span id="power"></span>
             <br>
@@ -61,7 +61,7 @@
     </div>
 </div>
   <script> 
-    run_client()
+    // run_client()
   </script>
   </body>
 </html>

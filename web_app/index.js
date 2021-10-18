@@ -45,6 +45,9 @@ function client(data="") {
     if (data == "") {
         return;
     }
+    if (data == "message") {
+        data = document.getElementById("message").value;
+    }
     const net = require('net');
     const client = net.createConnection({ port: server_port, host: server_addr }, () => {
         // 'connect' listener.
