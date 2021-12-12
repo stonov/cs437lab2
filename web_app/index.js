@@ -9,9 +9,10 @@ const STOP = "STOP"
 const SPEEDUP = "SPEEDUP"
 const SPEEDDOWN = "SPEEDDOWN"
 const UPDATE = "UPDATE"
+const POWER = "POWER"
 
 var server_port = 65432;
-var server_addr = "192.168.1.131";   // the IP address of your Raspberry PI
+var server_addr = "192.168.1.147";   // the IP address of your Raspberry PI
 
 function sendMoveForwardCommand() {
     client(FORWARD);
@@ -33,12 +34,11 @@ function sendStopCommand() {
     client(STOP);
 }
 
-function sendSpeedUp() {
-    client(SPEEDUP);
-}
-
-function sendSpeedDown() {
-    client(SPEEDDOWN);
+function sendSpeedData(val) {
+    console.log(val)
+    str = "POWER " + val
+    console.log(str)
+    client(str);
 }
 
 function client(data="") {
@@ -101,33 +101,27 @@ function updateKey(e) {
         // up (w)
         document.getElementById("upArrow").style.color = "green";
         sendMoveForwardCommand();
-    }
-    else if (e.keyCode == '83') {
+    } else if (e.keyCode == '83') {
         // down (s)
         document.getElementById("downArrow").style.color = "green";
         sendMoveBackwardCommand();
-    }
-    else if (e.keyCode == '65') {
+    } else if (e.keyCode == '65') {
         // left (a)
         document.getElementById("leftArrow").style.color = "green";
         sendMoveLeftCommand();
-    }
-    else if (e.keyCode == '68') {
+    } else if (e.keyCode == '68') {
         // right (d)
         document.getElementById("rightArrow").style.color = "green";
         sendMoveRightCommand();
-    }
-    else if (e.keyCode == '81') {
+    } else if (e.keyCode == '81') {
         // stop (e)
         sendStopCommand();
-    }
-    else if (e.keyCode == '187') {
-        // increase speed (e)
-        sendSpeedUp();
-    }
-    else if (e.keyCode == '189') {
-        // decrease speed (e)
-        sendSpeedDown();
+    } else if (e.keyCode >= '48') {
+        val = parseInt(e.keyCode) - 48
+        if (val == 0) {
+            val = 10
+        }
+        sendSpeedData((val*10).toString())
     }
 }
 
